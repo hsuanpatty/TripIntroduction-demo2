@@ -846,9 +846,10 @@ figcaption.tripBanner-flex p span {
   padding-bottom: 8px;
 }
 
-.tourist-detailinfo .info-item.btn,
-.tourist-detailinfo .info-item.btn ~ .info-item {
-  border-bottom: none;
+
+.tourist-info .tourist-detailinfo .info-item.btn,
+.tourist-info .tourist-detailinfo .info-item.btn ~ .info-item {
+  border-bottom: none !important;
 }
 
 .info-item.taxes .sub-info {
@@ -908,7 +909,7 @@ figcaption.tripBanner-flex p span {
     }
 
     .tourist-detailinfo {
-        width: 65%;
+        width: 80%;
     }
 }
 
