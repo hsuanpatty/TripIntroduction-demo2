@@ -1645,161 +1645,211 @@
           <div class="button-grid button-grid-1">
             <div class="button button--white button-1">團體旅遊</div>
 
-            <a href="https://www.luxetravel.com.tw/rcar-tours" target="_blank" class="button button--primary primary-w36 button-2">客製Mini Tour </a>
+            <a href="https://www.artisan.com.tw/MiniTour.aspx" target="_blank" class="button button--primary primary-w36 button-2"> 客製Mini Tour </a>
             <a href="https://www.luxetravel.com.tw/euro-backpack" target="_blank" class="button button--primary primary-w20 button-3">自由行</a>
             <a href="https://www.artisan.com.tw/fittrip/fittrip.aspx" target="_blank" class="button button--primary primary-w44 button-4">國際機票．機+酒</a>
           </div>
-          <div id="SearchPanel" onkeypress="javascript:return WebForm_FireDefaultButton(event, &#39;BtnSearch&#39;)">
-            <!-- xl -->
-            <div class="sass-property-search-w sass-search-sm">
-              <div class="sass-search-form-container">
-                <div class="sass-form-group dest-1 group-100">
-                  <label class="sass-form-label">目的地</label>
-                  <select name="DropDownList1" id="DropDownList1" class="sass-form-select">
-                    <option selected="selected" value="0">全選</option>
-                    <option value="1">中西歐</option>
-                    <option value="2">東歐</option>
-                    <option value="5">南歐</option>
-                    <option value="6">北歐</option>
-                    <option value="7">遊輪</option>
-                    <option value="8">紐西蘭．澳洲</option>
-                    <option value="9">南亞</option>
-                    <option value="10">古文明．土耳其</option>
-                    <option value="11">美洲</option>
-                    <option value="12">非洲</option>
-                    <option value="27">海島</option>
-                    <option value="32">東南亞</option>
-                    <option value="35">日本</option>
-                    <option value="36">韓國</option>
-                    <option value="37">中國大陸</option>
-                    <option value="42">河輪</option>
-                    <option value="44">俄羅斯．中亞．蒙古國</option>
-                  </select>
-                </div>
+          <!-- xl -->
+          <div class="sass-property-search-w sass-search-sm">
+            <div class="sass-search-form-container">
+              <div class="sass-form-group dest-1 group-100">
+                <label class="sass-form-label">目的地</label>
+                <select class="sass-form-select">
+                  <option value="">不限</option>
+                  <option value="apartment">中西歐</option>
+                  <option value="house">東歐</option>
+                  <option value="villa">南歐</option>
+                  <option value="commercial">北歐</option>
+                  <option value="land">中東</option>
+                </select>
+              </div>
 
-                <div class="sass-form-group area-1">
-                  <label class="sass-form-label">地區城市</label>
-                  <select name="DropDownList2" id="DropDownList2" class="sass-form-select">
-                    <option value="0">全選</option>
-                  </select>
-                </div>
+              <div class="sass-form-group area-1">
+                <label class="sass-form-label">地區城市</label>
+                <select class="sass-form-select">
+                  <option value="">全選</option>
+                  <option value="downtown">荷蘭．比利時．法國．盧森堡</option>
+                  <option value="suburb">英國．愛爾蘭</option>
+                  <option value="beachfront">瑞士</option>
+                  <option value="countryside">法國</option>
+                </select>
+              </div>
 
-                <div id="search-tool" class="etd-1 sass-form-group">
-                  <label class="sass-form-label">出發區間</label>
-                  <div class="searchBox-date">
-                    <input name="txtDateRange" type="text" id="txtDateRange" class="date-range" />
-                  </div>
-                </div>
+              <div id="search-tool" class="etd-1 sass-form-group">
+                <label class="sass-form-label">出發區間</label>
+                <div class="date-wrap">
+                  <input type="text" id="dateInput" class="pc-only" readonly />
 
-                <div id="keyWords" class="sass-form-group key-1">
-                  <label class="sass-form-label">關鍵字</label>
-                  <input name="txbKeySearch" type="text" id="txbKeySearch" placeholder="請輸入 行程名稱、遊輪" />
-                </div>
-
-                <div class="sass-form-group checkLabel-1">
-                  <div class="checkLabel-box">
-                    <div class="checkLabel">
-                      <span class="only-apply indicator cr_label"
-                        ><input id="chkSignUp" type="checkbox" name="chkSignUp" /><label for="chkSignUp">只找可報名</label></span
-                      >
+                  <div class="mobile-selector mobile-only">
+                    <div class="m-input-group" id="mStartBtn">
+                      <span class="m-label">出發日期</span>
+                      <span class="m-value" id="mStartVal"></span>
                     </div>
-                    <div class="checkLabel">
-                      <span class="only-apply indicator cr_label"
-                        ><input id="chkAlready" type="checkbox" name="chkAlready" /><label for="chkAlready">只找已成團</label></span
-                      >
+                    <div class="m-input-group" id="mEndBtn">
+                      <span class="m-label">回程日期</span>
+                      <span class="m-value" id="mEndVal"></span>
                     </div>
                   </div>
-                </div>
 
-                <div class="sass-form-group search-1">
-                  <label class="sass-form-label sass-hd">&nbsp;</label>
-                  <a id="BtnSearch" class="sass-search-button" href="javascript:__doPostBack(&#39;BtnSearch&#39;,&#39;&#39;)">
-                    <i class="fas fa-search"></i>
-                  </a>
+                  <div class="overlay" id="overlay"></div>
+
+                  <div class="calendar" id="calendar">
+                    <div class="pc-close-btn" id="pcCloseBtn">✕</div>
+
+                    <div class="m-close-btn" id="mCloseBtn">✕</div>
+                    <div id="statusHint" class="editing-hint">請選擇 [出發日期]</div>
+
+                    <div class="month-container">
+                      <div class="month-box">
+                        <div class="nav">
+                          <button id="prevBtn">❮</button>
+                          <span id="title1" class="title-text"></span>
+                          <button id="nextBtnMobile" class="m-next-btn">❯</button>
+                        </div>
+                        <div id="table1"></div>
+                      </div>
+                      <div class="month-box">
+                        <div class="nav">
+                          <button style="visibility: hidden">❮</button>
+                          <span id="title2" class="title-text"></span>
+                          <button id="nextBtnPC">❯</button>
+                        </div>
+                        <div id="table2"></div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
+              </div>
+
+              <div id="keyWords" class="sass-form-group key-1">
+                <label class="sass-form-label">關鍵字</label>
+                <input type="text" id="keyWordstext" placeholder="請輸入 行程名稱、郵輪" />
+              </div>
+
+              <div class="sass-form-group checkLabel-1">
+                <div class="checkLabel-box">
+                  <div class="checkLabel">
+                    <label class="cr_label"
+                      ><input type="checkbox" class="only-apply" value="" checked /><span class="indicator"></span><span>只找可報名</span></label
+                    >
+                  </div>
+                  <div class="checkLabel">
+                    <label class="cr_label"><input type="checkbox" class="only-group" value="" /><span class="indicator"></span><span>只找已成團</span></label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="sass-form-group search-1">
+                <label class="sass-form-label sass-hd">&nbsp;</label>
+                <button type="submit" class="sass-search-button">
+                  <i class="fas fa-search"></i>
+                </button>
               </div>
             </div>
           </div>
-          <div id="Panel1" onkeypress="javascript:return WebForm_FireDefaultButton(event, &#39;BtnSearchMobile&#39;)">
-            <!-- sm -->
-            <div class="container">
-              <div class="accordion-container">
-                <div class="accordion-item">
-                  <button type="button" class="accordion-button" aria-expanded="true">
-                    <span class="accordion-title">團體旅遊</span>
-                    <span class="icon"></span>
-                  </button>
-                  <div class="accordion-content">
-                    <div class="sass-property-search-w">
-                      <div class="sass-search-form-container">
-                        <div class="sass-form-group dest-1 group-100">
-                          <label class="sass-form-label">目的地</label>
-                          <select name="DropDownList12" id="DropDownList12" class="sass-form-select">
-                            <option value="0">全選</option>
-                            <option value="1">中西歐</option>
-                            <option value="2">東歐</option>
-                            <option value="5">南歐</option>
-                            <option value="6">北歐</option>
-                            <option value="7">遊輪</option>
-                            <option value="8">紐西蘭．澳洲</option>
-                            <option value="9">南亞</option>
-                            <option value="10">古文明．土耳其</option>
-                            <option value="11">美洲</option>
-                            <option value="12">非洲</option>
-                            <option value="27">海島</option>
-                            <option value="32">東南亞</option>
-                            <option value="35">日本</option>
-                            <option value="36">韓國</option>
-                            <option value="37">中國大陸</option>
-                            <option value="42">河輪</option>
-                            <option value="44">俄羅斯．中亞．蒙古國</option>
-                          </select>
-                        </div>
+          <!-- sm -->
+          <div class="container">
+            <div class="accordion-container">
+              <div class="accordion-item">
+                <button type="button" class="accordion-button" aria-expanded="true">
+                  <span class="accordion-title">團體旅遊</span>
+                  <span class="icon"></span>
+                </button>
+                <div class="accordion-content">
+                  <div class="sass-property-search-w">
+                    <div class="sass-search-form-container">
+                      <div class="sass-form-group dest-1 group-100">
+                        <label class="sass-form-label">目的地</label>
+                        <select class="sass-form-select">
+                          <option value="">不限</option>
+                          <option value="apartment">中西歐</option>
+                          <option value="house">東歐</option>
+                          <option value="villa">南歐</option>
+                          <option value="commercial">北歐</option>
+                          <option value="land">中東</option>
+                        </select>
+                      </div>
 
-                        <div class="sass-form-group area-1">
-                          <label class="sass-form-label">地區城市</label>
-                          <select name="DropDownList22" id="DropDownList22" class="sass-form-select">
-                            <option value="0">全選</option>
-                          </select>
-                        </div>
+                      <div class="sass-form-group area-1">
+                        <label class="sass-form-label">地區城市</label>
+                        <select class="sass-form-select">
+                          <option value="">全選</option>
+                          <option value="downtown">荷蘭．比利時．法國．盧森堡</option>
+                          <option value="suburb">英國．愛爾蘭</option>
+                          <option value="beachfront">瑞士</option>
+                          <option value="countryside">法國</option>
+                        </select>
+                      </div>
 
-                        <div id="search-tool" class="etd-1 sass-form-group">
-                          <label class="sass-form-label">出發區間</label>
-                          <div class="searchBox-date daterangepicker-wrapper">
-                            <input name="txtDateRange2" type="text" id="txtDateRange2" class="date-range-sm" />
-                          </div>
-                        </div>
+                      <div id="search-tool" class="etd-1 sass-form-group">
+                        <label class="sass-form-label">出發區間</label>
+                        <div class="date-wrap">
+                          <input type="text" id="dateInput" class="pc-only" readonly />
 
-                        <div id="keyWords" class="sass-form-group key-1">
-                          <label class="sass-form-label">關鍵字</label>
-                          <input name="txbKeySearch2" type="text" id="txbKeySearch2" placeholder="請輸入 行程名稱、遊輪" />
-                        </div>
-
-                        <div class="sass-form-group checkLabel-1 sass-sm">
-                          <div class="checkLabel-box">
-                            <div class="checkLabel">
-                              <span class="only-apply indicator cr_label"
-                                ><input id="chkSignUp3" type="checkbox" name="chkSignUp3" /><label for="chkSignUp3">只找可報名</label></span
-                              >
+                          <div class="mobile-selector mobile-only">
+                            <div class="m-input-group" id="mStartBtn">
+                              <span class="m-label">出發日期</span>
+                              <span class="m-value" id="mStartVal"></span>
                             </div>
-                            <div class="checkLabel">
-                              <span class="only-apply indicator"
-                                ><input id="chkAlready3" type="checkbox" name="chkAlready3" /><label for="chkAlready3">只找已成團</label></span
-                              >
+                            <div class="m-input-group" id="mEndBtn">
+                              <span class="m-label">回程日期</span>
+                              <span class="m-value" id="mEndVal"></span>
                             </div>
                           </div>
-                        </div>
 
-                        <div class="sass-form-group search-1">
-                          <label class="sass-form-label sass-hd">&nbsp;</label>
-                          <a
-                            id="BtnSearchMobile"
-                            class="sass-search-button ass-search-button sass-wp"
-                            href="javascript:__doPostBack(&#39;BtnSearchMobile&#39;,&#39;&#39;)"
-                          >
-                            <i class="fas fa-search"></i>
-                          </a>
+                          <div class="overlay" id="overlay"></div>
+
+                          <div class="calendar" id="calendar">
+                            <div class="m-close-btn" id="mCloseBtn">✕</div>
+                            <div id="statusHint" class="editing-hint">請選擇 [出發日期]</div>
+
+                            <div class="month-container">
+                              <div class="month-box">
+                                <div class="nav">
+                                  <button id="prevBtn">❮</button>
+                                  <span id="title1" class="title-text"></span>
+                                  <button id="nextBtnMobile" class="m-next-btn">❯</button>
+                                </div>
+                                <div id="table1"></div>
+                              </div>
+                              <div class="month-box">
+                                <div class="nav">
+                                  <button style="visibility: hidden">❮</button>
+                                  <span id="title2" class="title-text"></span>
+                                  <button id="nextBtnPC">❯</button>
+                                </div>
+                                <div id="table2"></div>
+                              </div>
+                            </div>
+                          </div>
                         </div>
+                      </div>
+
+                      <div id="keyWords" class="sass-form-group key-1">
+                        <label class="sass-form-label">關鍵字</label>
+                        <input type="text" id="keyWordssm" placeholder="請輸入 行程名稱、郵輪" />
+                      </div>
+
+                      <div class="sass-form-group checkLabel-1 sass-sm">
+                        <div class="checkLabel-box">
+                          <div class="checkLabel">
+                            <label class="cr_label"
+                              ><input type="checkbox" class="only-apply" value="" checked /><span class="indicator"></span><span>只找可報名</span></label
+                            >
+                          </div>
+                          <div class="checkLabel">
+                            <label class="cr_label"
+                              ><input type="checkbox" class="only-group" value="" /><span class="indicator"></span><span>只找已成團</span></label
+                            >
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="sass-form-group search-1">
+                        <label class="sass-form-label sass-hd">&nbsp;</label>
+                        <button type="submit" class="sass-search-button sass-wp">
+                          <i class="fas fa-search"></i>
+                        </button>
                       </div>
                     </div>
                   </div>
@@ -2989,7 +3039,7 @@
                 }
               },
               true,
-            );
+            ); // 關鍵在於這個 true，直接凌駕於 Inline onclick 之上！
           });
         });
       </script>
