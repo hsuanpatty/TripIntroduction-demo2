@@ -277,7 +277,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   //
   // 6. 頁面載入後，「網址參數解析與自動月份表格及標題切換」
-  /
+  //
   const params = new URLSearchParams(window.location.search);
   const rawTargetDate = params.get("date");
   const targetDate = rawTargetDate ? decodeURIComponent(rawTargetDate) : null; 
