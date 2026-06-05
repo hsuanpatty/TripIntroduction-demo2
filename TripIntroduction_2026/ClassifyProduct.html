@@ -34,24 +34,6 @@
       .ps {
         display: none;
       }
-
-      /* 1. 讓這些區域對滑鼠「隱形」，點擊直接穿透，觸發不到外層的 onclick */
-      .table-content-tool .departure,
-      .table-content-tool .plant,
-      .table-content-tool .seat,
-      .table-content-tool .status,
-      .table-content-tool .price {
-        pointer-events: none !important; /* 核心：沒收點擊訊號 */
-        cursor: default !important; /* 游標變回普通箭頭 */
-      }
-
-      /* 2. 只有行程名稱（A3）和它裡面的 h3 依然是活的、可以點 */
-      .table-content-tool .name,
-      .table-content-tool .name a,
-      .table-content-tool .name a h3 {
-        pointer-events: auto !important; /* 允許滑鼠點擊 */
-        cursor: pointer !important; /* 變回手指 */
-      }
     </style>
 
     <!-- Yahoo 關鍵字廣告 -->
@@ -2988,43 +2970,26 @@
 
       <script>
         document.addEventListener("DOMContentLoaded", function () {
-          // 1. 鎖定 21.html 最外層大框框
+          // 1. 最外層大框框
           const toolRows = document.querySelectorAll(".table-content-tool");
 
           toolRows.forEach((row) => {
-            // 2. 使用最頂級的 true (Capturing 捕獲模式)
-            // 這能在 HTML 內建的 onclick 執行之前，搶先攔截滑鼠訊號！
+            // 2. 點(行程名稱)
             row.addEventListener(
               "click",
               function (e) {
-                // 檢查滑鼠當下肉體點擊到的地方，是不是 A3 (行程名稱)
-                const isA3Click = e.target.closest(".name a") || e.target.tagName === "A";
+                const isA3Click = e.target.closest(".name a");
 
                 if (isA3Click) {
-                  // 如果是點行程名稱 A3，允許點擊，放行讓它走自己的 href="./A.html"
                   return;
                 } else {
-                  // 【核心大絕招】如果點到日期、飛機、座位、已成團、價格等其他任何地方：
-                  // 直接開啟最高防禦，把點擊訊號當場消滅，絕對不准觸發 HTML 寫死的 window.open！
                   e.preventDefault();
                   e.stopPropagation();
                   e.stopImmediatePropagation();
                 }
               },
               true,
-            ); // 關鍵在於這個 true，直接凌駕於 Inline onclick 之上！
-          });
-
-          // 3. 視覺樣式優化：把不要點的地方游標全部變回普通箭頭
-          const noClickElements = document.querySelectorAll(
-            ".table-content-tool .departure, " +
-              ".table-content-tool .plant, " +
-              ".table-content-tool .seat, " +
-              ".table-content-tool .status, " +
-              ".table-content-tool .price",
-          );
-          noClickElements.forEach((el) => {
-            el.style.cursor = "default";
+            );
           });
         });
       </script>
