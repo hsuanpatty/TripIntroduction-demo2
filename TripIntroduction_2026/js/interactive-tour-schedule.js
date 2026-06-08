@@ -1,74 +1,69 @@
 $(document).ready(function () {
-  // 更新表格函數
-  function updateTable(tripDate) {
-    // 隱藏所有的旅遊表格
-    $('.tourist-table table').hide();
+    // ==========================================
+    // 1. 更新顯示資訊與高亮樣式
+    // ==========================================
+    function updateDetailUI(row) {
+        const $row = $(row);
+        
+        // 移除所有已存在的高亮，並對當前點選的 row 加上高亮
+        $('.datemain-container').removeClass('highlight-row');
+        $row.addClass('highlight-row');
 
-    // 检查 tripDate 是否为空或未定义
-    if (!tripDate || tripDate.length === 0) {
-// 如果为空或未定义，创建一个表格显示“無行程”
-var currentDate = new Date();
-var currentYear = currentDate.getFullYear();
-var currentMonth = currentDate.getMonth() + 1;
-var tripDate = currentYear + '-' + currentMonth;
-var noTripTable = '<table trip-date="' + tripDate + '">' +
-  '<thead class="travel-title">' +
-  '<tr>' +
-  '<th>出發日期</th>' +
-  '<th>機位席次 ｜ 可售席次</th>' +
-  '<th>出團狀況</th>' +
-  '<th>售價</th>' +
-  '</tr>' +
-  '</thead>' +
-  '<tbody>' +
-  '<tr>' +
-  '<th class="departure-date">無行程</th>' +
-  '</tr>' +
-  '</tbody>' +
-  '</table>';
-// 插入到 DOM 中
-// 格式化为所需形式
-var formattedDate = currentYear + " 年 " + currentMonth + " 月";
-$('.month-header .dateContent').text(formattedDate);
-$('.tourist-table').append(noTripTable);
-return; // 直接返回，不执行后续操作
+        // 抓取資料並更新 UI
+        const date = $row.find(".departure-date").text().trim();
+        const seats = $row.find(".seats-flight").text().trim();
+        const statusText = $row.find(".status").text().trim();
+        const price = $row.find(".number").text().trim();
+        
+        const statusClass = $row.find(".status").hasClass("green") ? "green" :
+                            $row.find(".status").hasClass("blue") ? "blue" : "red";
+
+        $("#display-date").text(date);
+        $("#display-status").html(`<span class="status ${statusClass}">${statusText}</span>`);
+        $(".info-item.seat .blue").text(seats);
+        $(".info-item.fee .number").text(price);
     }
 
-    // 顯示與指定 tripDate 相對應的表格
-    $('.tourist-table table[trip-date="' + tripDate + '"]').show();
-    // 更新日期標題
-    var formattedDate = tripDate.replace("-", " 年 ") + " 月";
-    $('.month-header .dateContent').text(formattedDate);
-  }
+    // ==========================================
+    // 2. 切換月份
+    // ==========================================
+    function switchMonth(tripDate) {
+        $('.tourist-table table').hide();
+        const $targetTable = $('.tourist-table table[trip-date="' + tripDate + '"]');
+        $targetTable.show();
 
-  // 初始設置
-  updateTable($('.tourist-table table:first').attr('trip-date'));
+        const formattedDate = tripDate.replace("-", " 年 ") + " 月";
+        $('.month-header .dateContent').text(formattedDate);
 
-  // 按下 "nextMonth" 按鈕
-  $('#nextMonth').click(function () {
-    var $currentTable = $('.tourist-table table:visible');
-    var $nextTable = $currentTable.next('table');
-    if ($nextTable.length === 0) {
-$nextTable = $('.tourist-table table:first');
+        // [關鍵]：切換月時，自動選定第一筆並高亮
+        const $firstRow = $targetTable.find('.datemain-container').first();
+        if ($firstRow.length > 0) {
+            updateDetailUI($firstRow);
+        }
     }
-    var nextTripDate = $nextTable.attr('trip-date');
-    // 更新表格
-    updateTable(nextTripDate);
-  });
 
-  // 按下 "prevMonth" 按鈕
-  $('#prevMonth').click(function () {
-    var $currentTable = $('.tourist-table table:visible');
-    var $prevTable = $currentTable.prev('table');
-    if ($prevTable.length === 0) {
-$prevTable = $('.tourist-table table:last');
-    }
-    var prevTripDate = $prevTable.attr('trip-date');
-    // 更新表格
-    updateTable(prevTripDate);
-  });
+    // ==========================================
+    // 3. 事件監聽 (使用事件委派)
+    // ==========================================
+    $('.tourist-table').on('click', '.datemain-container', function () {
+        updateDetailUI(this);
+    });
+
+    $('#nextMonth, #prevMonth').click(function () {
+        const $tables = $('.tourist-table table');
+        const $current = $tables.filter(':visible');
+        const index = $tables.index($current);
+        const newIndex = $(this).attr('id') === 'nextMonth' 
+            ? (index + 1) % $tables.length 
+            : (index - 1 + $tables.length) % $tables.length;
+        
+        switchMonth($tables.eq(newIndex).attr('trip-date'));
+    });
+
+    // 初始載入
+    const initialDate = $('.tourist-table table:first').attr('trip-date');
+    switchMonth(initialDate);
 });
-
 // 行程列表頁 抓取日期
 document.addEventListener("DOMContentLoaded", function () {
 
